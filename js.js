@@ -1,9 +1,9 @@
 let dasaset = {
 	list_parametrs: {
-					'touch': true,
-					'dots': false,
-					'arrows': false,
-					'duration': 500,
+		'touch': true,
+		'dots': false,
+		'arrows': false,
+		'duration': 500,
 	}, 
 	styles: {
 		wrapper: {
@@ -15,16 +15,16 @@ let dasaset = {
 				  'position': 'relative',
 				  'display': 'flex'},
 		touch: {
-					"width": "100%",
-					"position": "absolute",
-					"height": "95%",
-					"opacity": "0",
-					"display": "flex",},
+				"width": "100%",
+				"position": "absolute",
+				"height": "95%",
+				"opacity": "0",
+				"display": "flex",},
 		footer: {
-					"width": "100%",
-					'align-items': 'end',
-					'display': 'flex',
-					'justify-content': 'space-between', },
+				"width": "100%",
+				'align-items': 'end',
+				'display': 'flex',
+				'justify-content': 'space-between', },
 	},
 }
 
@@ -124,7 +124,7 @@ class Event {
 
 		if(new_index < this.status_index ){ 
 			if(new_index == -1){
-				return -1
+				return -1 
 			} else {
 				this.change_status_index(new_index)
 				this.sum = this.sum - (this.list[this.status_index].offsetWidth * step)
@@ -132,7 +132,7 @@ class Event {
 			}
 		} else if(new_index > this.status_index){ 
 			if(new_index >= this.list.length){
-				return -1
+				return -1 
 			} else {
 				this.change_status_index(new_index)
 				this.sum = this.sum + (this.list[this.status_index].offsetWidth * step)
@@ -150,7 +150,7 @@ class Event {
 		  {left:  start + 'px'},
 		  {left:  end + 'px'}
 		], {
-		  duration: this.base.base.data.duration,
+		  duration: this.base.base.data.duration, 
 		  iterations: 1,
 		});
 	}
@@ -159,11 +159,13 @@ class Event {
 	}
 
 	current_dot(){
-		let array = [...document.querySelectorAll(`.dot`)]
-		array.forEach(element => {
-			element.classList.remove('current_dot')
-		})
-		array[this.status_index].classList.add('current_dot')
+		if(this.base.base.data.dots){
+			let array = [...document.querySelectorAll(`.dot`)]
+			array.forEach(element => {
+				element.classList.remove('current_dot')
+			})
+			array[this.status_index].classList.add('current_dot')
+		}
 	}
 }
 
@@ -225,6 +227,14 @@ class Feature {
 			})
 		})
 	}
+	index(i){
+		if(i > this.base.block_carusele.childElementCount - 1){
+			i = 0
+		}
+		
+		this.event.change_status_index(i)
+		this.event.change_img(i)
+	}
 }
 
 
@@ -243,11 +253,15 @@ class Carusel{
 	start(){
 		this.display_carusel(this.block_carusele)
 		let s = new Feature(this)
-		
+
 		for(let parm in this.data){
-			if(this.data[parm] == true){
+			if(typeof this.data[parm] == 'boolean' && this.data[parm] == true){
 				s[parm]()
-			}
+			} else if(typeof this.data[parm] == 'number'){
+				if(s.__proto__.hasOwnProperty(parm)){
+					s[parm](this.data[parm])
+				}
+			} 
 		}
 	}
 }
