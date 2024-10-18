@@ -1,19 +1,19 @@
 let dasaset = {
 	list_parametrs: {
-		'touch': true,
-		'dots': false,
-		'arrows': false,
-		'duration': 500,
+				'touch': true,
+				'dots': false,
+				'arrows': false,
+				'duration': 500,
 	}, 
 	styles: {
 		wrapper: {
-				  'display': 'flex',
-				  'height': '95%',
-				  'position': 'absolute'},
+				'display': 'flex',
+				'height': '95%',
+				'position': 'absolute'},
 		id: 	{ 
-				  'overflow': 'hidden',
-				  'position': 'relative',
-				  'display': 'flex'},
+				'overflow': 'hidden',
+				'position': 'relative',
+				'display': 'flex'},
 		touch: {
 				"width": "100%",
 				"position": "absolute",
