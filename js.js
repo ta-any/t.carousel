@@ -228,7 +228,7 @@ class Feature {
 		})
 	}
 	index(i){
-		if(i > this.content.block_carusele.childElementCount - 1){
+		if(i > this.content.block_carusele.childElementCount){
 			i = 0
 		}
 		
