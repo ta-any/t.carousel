@@ -1,4 +1,4 @@
-let dasaset = {
+let typical = {
 	list_parametrs: {
 				'touch': true,
 				'dots': false,
@@ -29,12 +29,12 @@ let dasaset = {
 }
 
 let Base = {
-	__proto__ : dasaset,
+	__proto__ : typical,
 
 	replaceDataset(data){
-		for(let key in dasaset.list_parametrs){
+		for(let key in typical.list_parametrs){
 			if(!data.hasOwnProperty(key)){
-				data[key] = dasaset.list_parametrs[key]
+				data[key] = typical.list_parametrs[key]
 			} 
 		} 
 		return data
@@ -58,9 +58,9 @@ let Base = {
 		let cls_wrapper = document.querySelector(`.wrapper`)
 		let footer = this.add_html_block(block, [], 'bottom', 'footer')
 
-		dasaset['styles']['wrapper']['width'] = `${this.width}px`
-		this.append_to_style(cls_wrapper, dasaset['styles']['wrapper'])
-		this.append_to_style(block, dasaset['styles']['id'])
+		typical['styles']['wrapper']['width'] = `${this.width}px`
+		this.append_to_style(cls_wrapper, typical['styles']['wrapper'])
+		this.append_to_style(block, typical['styles']['id'])
 	},
 	calculateTheWidth(content){
 		let count = content.length
@@ -74,7 +74,7 @@ let Base = {
 		let newElement = this.get_array_elements(contents);
 		newElement.classList.add(blockName);
 		
-		this.append_to_style(newElement, dasaset['styles'][blockName])
+		this.append_to_style(newElement, typical['styles'][blockName])
 		
 		if(position == 'top'){
 			basic.prepend(newElement)
@@ -104,14 +104,14 @@ let Base = {
 class Event {
 	status_index = 0
 	sum = 0
-	constructor(base){
-		this.base = base;
-		this.list = [...this.base.wrapper_block.children]
+	constructor(option){
+		this.option = option;
+		this.list = [...this.option.wrapper_block.children]
 	}
 	change_img(index){
 		this.sum = 0
 		this.sum += this.list[index].offsetWidth * index
-		this.base.base.append_to_style(this.base.wrapper_block, {
+		this.option.content.append_to_style(this.option.wrapper_block, {
 			left: `-${this.sum}px`
 		})
 		this.change_status_index(index)
@@ -141,16 +141,16 @@ class Event {
 		}
 
 		this.animate(start, -this.sum)
-		this.base.base.append_to_style(this.base.wrapper_block, {
+		this.option.content.append_to_style(this.option.wrapper_block, {
 			left: `-${this.sum}px`
 		})
 	}
 	animate(start, end){
-		this.base.wrapper_block.animate([
+		this.option.wrapper_block.animate([
 		  {left:  start + 'px'},
 		  {left:  end + 'px'}
 		], {
-		  duration: this.base.base.data.duration, 
+		  duration: this.option.content.data.duration, 
 		  iterations: 1,
 		});
 	}
@@ -159,7 +159,7 @@ class Event {
 	}
 
 	current_dot(){
-		if(this.base.base.data.dots){
+		if(this.option.content.data.dots){
 			let array = [...document.querySelectorAll(`.dot`)]
 			array.forEach(element => {
 				element.classList.remove('current_dot')
@@ -172,13 +172,13 @@ class Event {
 class Feature {  
 	footer_block = document.querySelector(`.footer`)
 	wrapper_block = document.querySelector(`.wrapper`)
-	constructor(base){
-		this.base = base
+	constructor(content){
+		this.content = content
 		this.event = new Event(this)
 	}
 	arrows(){	
-		this.base.add_html_block(this.footer_block, [], 'top', 'left')
-		this.base.add_html_block(this.footer_block, [], 'bottom', 'rigth')
+		this.content.add_html_block(this.footer_block, [], 'top', 'left')
+		this.content.add_html_block(this.footer_block, [], 'bottom', 'rigth')
 
 		document.querySelector(`.left`).addEventListener('click', event => {
 			this.event.move_to(this.event.status_index - 1)
@@ -189,8 +189,8 @@ class Feature {
 		})
 	}
 	dots(){
-		let center = this.base.get_center_block(this.footer_block)
-		let dots = this.base.get_array_elements([...this.wrapper_block.children])
+		let center = this.content.get_center_block(this.footer_block)
+		let dots = this.content.get_array_elements([...this.wrapper_block.children])
 		dots.classList.add('dots')
 
 		let list_dots = [...dots.children]
@@ -212,10 +212,10 @@ class Feature {
 		})
 	}
 	touch(){
-		this.base.add_html_block(this.base.block_carusele, [...this.wrapper_block.children], 'bottom', 'touch')
+		this.content.add_html_block(this.content.block_carusele, [...this.wrapper_block.children], 'bottom', 'touch')
 		let list = [...document.querySelector(`.touch`).children]
 		list.forEach(div => {
-			this.base.append_to_style(div,  {
+			this.content.append_to_style(div,  {
 				"width": "100%",
 				'display': 'block',})
 		})
@@ -228,7 +228,7 @@ class Feature {
 		})
 	}
 	index(i){
-		if(i > this.base.block_carusele.childElementCount - 1){
+		if(i > this.content.block_carusele.childElementCount - 1){
 			i = 0
 		}
 		
@@ -254,12 +254,12 @@ class Carusel{
 		this.display_carusel(this.block_carusele)
 		let s = new Feature(this)
 
-		for(let parm in this.data){
-			if(typeof this.data[parm] == 'boolean' && this.data[parm] == true){
-				s[parm]()
-			} else if(typeof this.data[parm] == 'number'){
-				if(s.__proto__.hasOwnProperty(parm)){
-					s[parm](this.data[parm])
+		for(let item in this.data){
+			if(typeof this.data[item] == 'boolean' && this.data[item] == true){
+				s[item]()
+			} else if(typeof this.data[item] == 'number'){
+				if(s.__proto__.hasOwnProperty(item)){
+					s[item](this.data[item])
 				}
 			} 
 		}
