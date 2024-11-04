@@ -21,3 +21,16 @@ let baner = new Carusel('baner', {
 baner.start()
 ```
 add css file with your styles
+
+# Default options
+```
+new Carusel(block, {
+  'touch': true,
+  'dots': false,
+  'arrows': false,
+  'duration': 500,
+  'index' : 0,
+  'loop' : false,
+})
+```
+
