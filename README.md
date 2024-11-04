@@ -16,11 +16,7 @@ Easy to use carousel, with infinite loop and lightweight, no dependencies.
 ```
 ```
 let baner = new Carusel('baner', {
-  'touch': true,
-  'dots': true,
-  'arrows': true,
-  'loop': true,
-  'index': 1,
+  ...
 })
 baner.start()
 ```
