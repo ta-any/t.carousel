@@ -31,6 +31,8 @@ new Carusel(block, {
   'duration': 500,
   'index' : 0,
   'loop' : false,
+  'timer': false,
+  'duration_timer': 2000,
 })
 ```
 
