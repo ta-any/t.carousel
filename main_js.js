@@ -3,9 +3,11 @@ const typical = {
 				'touch': true,
 				'dots': false,
 				'arrows': false,
-				'duration': 500,
+				'duration': 1500,
 				'index' : 0,
 				'loop' : false,
+				'timer': false,
+				'duration_timer': 2000,
 	}, 
 	styles: {
 		wrapper: {
@@ -111,6 +113,7 @@ class Feature {
 	matrix = [] 
 	status_index = 0
 	core = 0
+	isPaused = false
 
 	constructor(content){
 		this.content = content
@@ -154,6 +157,7 @@ class Feature {
 
 		this.event = new Event(this)
 		this.start_option()
+
 	}
 	start_option(){
 		for(let item in this.content.data){
@@ -168,6 +172,9 @@ class Feature {
 			}
 
 		}
+		// 	}// } else if(typeof this.data[content] == 'boolean' && this.data[parm] != false){
+		// 	// 	console.log('Error') 
+		// 	// }
 	}
 	arrows(){	
 		
@@ -233,6 +240,32 @@ class Feature {
 				this.event.change_block(index)
 			})
 		})
+	}
+	play_timer(){
+		setTimeout(() => {
+			this.isPaused = false;
+		}, 5000)
+	}
+	timer(){
+		window.setInterval(() => {
+			if(!this.isPaused){
+				this.event.move_to(this.status_index + 1)
+			}
+		}, this.content.data.duration_timer);
+		
+
+		TCarusel.addEventListener('click', () => {
+			this.isPaused = true;
+			this.play_timer()
+			
+		})
+		if(this.content.data.touch){
+			const touch = document.querySelector('.touch')
+			touch.addEventListener('mouseover', () => {
+				this.isPaused = true;
+				this.play_timer()
+			})
+		}	
 	}
 	build_matrix(side){
 		let line = []
@@ -364,6 +397,33 @@ class Event {
 
 }
 
+
+
+const outside = {
+	get_index(){
+		return this.s.status_index
+	},
+	prev(){
+		let index = this.get_index()
+		let list = [...this.s.wrapper.children]
+		return (index - 1) <= -1 ?  list[list.length - 1] : list[index - 1]
+	},
+	next(){
+		let index = this.get_index()
+		let list = [...this.s.wrapper.children]
+
+		return (index + 1) < list.length ? list[index + 1] : -1	
+	},
+	get_id(){
+		return this.block_carusele
+	},
+	append_style_to(element, style){
+		for(let item in style){
+			element['style'][item] = style[item]
+		}
+	},
+}
+
 class Carusel {
 	constructor(id, data){
 		this.name_id = id
@@ -378,3 +438,4 @@ class Carusel {
 }
 
 Object.assign(Carusel.prototype, Base);
+Object.assign(Carusel.prototype, outside);
