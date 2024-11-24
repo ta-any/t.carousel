@@ -172,10 +172,7 @@ class Feature {
 			}
 
 		}
-		// 	}// } else if(typeof this.data[content] == 'boolean' && this.data[parm] != false){
-		// 	// 	console.log('Error') 
-		// 	// }
-	}
+					}
 	arrows(){	
 		
 		this.left = this.content.create_element('left')
@@ -422,6 +419,10 @@ const outside = {
 			element['style'][item] = style[item]
 		}
 	},
+	destroy(){
+		this.block_carusele.remove();
+
+	}
 }
 
 class Carusel {
