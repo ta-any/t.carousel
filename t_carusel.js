@@ -8,6 +8,7 @@ const typical = {
 				'loop' : false,
 				'timer': false,
 				'duration_timer': 2000,
+				'open_module': false,
 	}, 
 	styles: {
 		wrapper: {
@@ -29,6 +30,10 @@ const typical = {
 				'align-items': 'end',
 				'display': 'flex',
 				'justify-content': 'space-between', },
+		wrapper_modul: {
+				'position': 'absolute',
+	  			'top': '0', 
+	  			'height': '100vh'},
 	},
 }
 
@@ -157,7 +162,27 @@ class Feature {
 
 		this.event = new Event(this)
 		this.start_option()
+		
 
+	}
+	open_module(){
+		let list = [...this.content.block_carusele.children]
+
+		this.content.block_carusele.addEventListener('click', event => { 
+			
+			let wrapper_div = this.content.create_element('wrapper_modul')
+			let div = this.content.create_element('div')	
+			this.content.clone_content(div, [...this.wrapper.children], 'bottom', 1)		
+			wrapper_div.appendChild(div)
+
+			this.content.append_to_style(div, typical.styles.wrapper)
+			this.content.append_to_style(wrapper_div, typical.styles.wrapper_modul)
+
+			
+			const parent_carusele = this.content.block_carusele.parentElement
+			parent_carusele.insertAdjacentElement('afterEnd', wrapper_div);
+		})
+			
 	}
 	start_option(){
 		for(let item in this.content.data){
